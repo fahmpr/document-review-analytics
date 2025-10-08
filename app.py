@@ -18,8 +18,8 @@ combined_df['is_billable'] = combined_df['billable'].astype(str).str.lower().isi
 # Create initial aggregations
 def aggregate_data(filtered_df):
     hours_by_month = filtered_df.groupby('year_month')['hours'].sum().reset_index()
-    docs_by_month = filtered_df.groupby('year_month')['#of_documents_coded'].sum().reset_index()
-    review_by_type_month = filtered_df.groupby(['year_month', 'affirmative_or_defensive'])['hours'].sum().reset_index()
+    docs_by_month = filtered_df.groupby('year_month')['#of documents coded'].sum().reset_index()
+    review_by_type_month = filtered_df.groupby(['year_month', 'affirmative or defensive'])['hours'].sum().reset_index()
     cases_by_month = filtered_df.groupby(['year_month', 'jobcode_3'])['hours'].sum().reset_index()
     states_by_month = filtered_df.groupby(['year_month', 'states'])['hours'].sum().reset_index()
     billable_stats = filtered_df.groupby('year_month').agg(
@@ -65,14 +65,10 @@ def update_graphs(selected_year):
     hours_by_month, docs_by_month, review_by_type_month, cases_by_month, states_by_month, billable_stats = aggregate_data(filtered_df)
 
     fig1 = px.bar(hours_by_month, x='year_month', y='hours', title='Total Hours Worked Per Month')
-    fig2 = px.line(docs_by_month, x='year_month', y='#of_documents_coded', title='Documents Reviewed Per Month')
-    fig3 = px.bar(review_by_type_month, x='year_month', y='hours', color='affirmative_or_defensive', title='Review Type by Volume')
+    fig2 = px.line(docs_by_month, x='year_month', y='#of documents coded', title='Documents Reviewed Per Month')
+    fig3 = px.bar(review_by_type_month, x='year_month', y='hours', color='affirmative or defensive', title='Review Type by Volume')
     fig4 = px.bar(cases_by_month, x='year_month', y='hours', color='jobcode_3', title='Cases Worked On')
     fig5 = px.bar(states_by_month, x='year_month', y='hours', color='states', title='Jurisdictions Worked On')
     fig6 = px.line(billable_stats, x='year_month', y='billable_pct', title='Billable Time Percentage')
 
     return fig1, fig2, fig3, fig4, fig5, fig6
-
-# Note: app.run disabled in restricted environments
-#if __name__ == '__main__':
-#    app.run(debug=False)
