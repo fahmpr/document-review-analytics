@@ -73,5 +73,6 @@ def update_graphs(selected_year):
 
     return fig1, fig2, fig3, fig4, fig5, fig6
 
-if __name__ == '__main__':
-    app.run(debug=False)
+# Note: app.run disabled in restricted environments
+#if __name__ == '__main__':
+#    app.run(debug=False)
